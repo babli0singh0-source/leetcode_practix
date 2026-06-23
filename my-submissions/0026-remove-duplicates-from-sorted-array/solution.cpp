@@ -1,24 +1,24 @@
-
 class Solution {
 public:
-    static bool customsort(int a,int b){
-        return a>b;
-    }
     int removeDuplicates(vector<int>& nums) {
-        int n=nums.size();
-        int k=nums[0],ans=0;
-        for(int i=1;i<n;){
-            while(i<n&&nums[i]==k){
-                nums[i]=-10000;
-                ans++;
-                i++;
+        int i=1;
+        int curr=0;
+        int prev=nums[0];
+        bool ch=false;
+        while(i<nums.size()){
+            while(prev>=nums[i]){
+                i=i+1;
+                if(i>=nums.size()){
+                    ch=true;
+                    break;
+                }
             }
-            k=nums[i];
-            i++;
+            if(ch)break;
+            swap(nums[curr+1],nums[i]);
+            curr++;
+            prev=nums[curr];
         }
-        sort(nums.begin(),nums.end(),customsort);
-        reverse(nums.begin(),nums.begin()+n-ans);
-        return n-ans;
-        
+        nums.erase(nums.begin()+curr+1,nums.end());
+        return nums.size();
     }
 };
