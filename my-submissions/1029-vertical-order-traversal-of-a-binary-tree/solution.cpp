@@ -12,26 +12,34 @@
 class Solution {
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        map<int,map<int,multiset<int>>>mpp;// distance,level,val
-        queue<pair<TreeNode*,pair<int,int>>>q; //node,distance ,level
-        q.push({root,{0,0}});
+        queue<pair<TreeNode*,pair<int,int>>>q;
+        unordered_map<int,vector<int>>mpp;
+        TreeNode* temp=root;
+        q.push({temp,{0,0}});
+        int start=INT_MAX;
+        int end=INT_MIN;
         while(!q.empty()){
-            auto temp=q.front();
-            q.pop();
-            TreeNode* curr=temp.first;
-            int dis=temp.second.first;
-            int level=temp.second.second;
-            mpp[dis][level].insert(curr->val);
-            if(curr->left)q.push({curr->left,{dis-1,level+1}});
-            if(curr->right)q.push({curr->right,{dis+1,level+1}});
+            int s=q.size();
+            unordered_map<int,vector<int>>temp;
+            for(int i=0;i<s;i++){
+                auto [curr,p]=q.front();
+                q.pop();
+                auto [level,dis]=p;
+                start=min(start,dis);
+                end=max(end,dis);
+                temp[dis].push_back(curr->val);
+                if(curr->left)q.push({curr->left,{level+1,dis-1}});
+                if(curr->right)q.push({curr->right,{level+1,dis+1}});
+            }
+            for(auto &it:temp){
+                auto x=it.second;
+                sort(x.begin(),x.end());
+                mpp[it.first].insert(mpp[it.first].end(),x.begin(),x.end());
+            }
         }
         vector<vector<int>>ans;
-        for(auto &it:mpp){//distance wise
-            vector<int>col;
-            for(auto &c:it.second){//adding level wise
-                col.insert(col.end(),c.second.begin(),c.second.end());
-            }
-            ans.push_back(col);//inserted at distance it for all levels ;
+        for(int i=start;i<=end;i++){
+            ans.push_back(mpp[i]);
         }
         return ans;
     }
