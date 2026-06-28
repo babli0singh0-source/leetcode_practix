@@ -1,27 +1,23 @@
 class Solution {
-    static bool custumsort(vector<int>&a,vector<int>&b){
-        if(a[0]!=b[0])return a[0]>b[0];
-        return a[1]>b[1];
-    }
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(),intervals.end(),custumsort);
-        int i=intervals.size();
+        sort(intervals.begin(),intervals.end());
         vector<vector<int>>ans;
-        int s=intervals[i-1][0];
-        int e=intervals[i-1][1];
-        i=i-2;
-        while(i>=0){
-            if(e>=intervals[i][0]){
-                e=max(e,intervals[i][1]);
+        int n=intervals.size();
+        int s0=intervals[0][0];
+        int s1=intervals[0][1];
+        ans.push_back({s0,s1});
+        for(int i=1;i<n;i++){
+            if(s1<intervals[i][0]){
+                s0=intervals[i][0];
+                s1=intervals[i][1];
+                ans.push_back({s0,s1});
             }else{
-                ans.push_back({s,e});
-                s=intervals[i][0];
-                e=intervals[i][1];
+                ans.pop_back();
+                s1=max(s1,intervals[i][1]);
+                ans.push_back({s0,s1});
             }
-            i--;
         }
-        ans.push_back({s,e});
         return ans;
     }
 };
