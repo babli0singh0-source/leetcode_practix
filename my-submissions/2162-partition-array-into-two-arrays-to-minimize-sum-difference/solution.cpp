@@ -1,18 +1,10 @@
-class Solution {
-    long long total;
-    long long find(int i,vector<int>&nums,int len,int n,long long sum){
-        if(len==(n/2))return abs(total-2*sum);
-        else if(i==n)return LLONG_MAX;
-        long long take=find(i+1,nums,len+1,n,sum+nums[i]);
-        long long nottake=find(i+1,nums,len,n,sum);
-        return min(take,nottake);
-    }
+class Solution { 
 public:
     int minimumDifference(vector<int>& nums) {
         int n=nums.size();
+        long long total=0;
         for(int &i:nums)total+=i;
         int m=n/2;
-        // return (int)find(0,nums,0,n,0);
         vector<vector<long long>> left(m + 1), right(m + 1);
         for (int mask = 0; mask < (1 << m); mask++) {
             long long suml = 0,sumr=0;
@@ -43,6 +35,6 @@ public:
                 }
             }
         }
-        return ans;
+        return (int)ans;
     }
 };
