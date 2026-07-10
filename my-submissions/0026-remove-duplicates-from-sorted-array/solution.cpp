@@ -1,24 +1,21 @@
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
-        int i=1;
-        int curr=0;
-        int prev=nums[0];
-        bool ch=false;
-        while(i<nums.size()){
-            while(prev>=nums[i]){
-                i=i+1;
-                if(i>=nums.size()){
-                    ch=true;
-                    break;
-                }
+        int last=nums.back();
+        int n=nums.size();
+        int left=0;
+        int prev=nums[left];
+        for(int right=1;right<n;){
+            if(nums[right]<=prev){
+                right++;
+                continue;
             }
-            if(ch)break;
-            swap(nums[curr+1],nums[i]);
-            curr++;
-            prev=nums[curr];
+            left++;
+            prev=nums[right];
+            swap(nums[left],nums[right]);
+            right++;
+            if(nums[left]==last)break;
         }
-        nums.erase(nums.begin()+curr+1,nums.end());
-        return nums.size();
+        return left+1;
     }
 };
