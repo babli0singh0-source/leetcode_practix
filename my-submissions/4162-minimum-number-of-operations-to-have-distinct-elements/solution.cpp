@@ -1,31 +1,26 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums) {
-        unordered_map<int,int>mpp,newm;
-        int n=nums.size();
-        bool check=true;
-        for(int i=0;i<n;i++){
-            mpp[nums[i]]++;
-            if(mpp[nums[i]]>1){
-                newm[nums[i]]++;
-                check=false;
+        unordered_map<int,int>mpp;
+        for(int i:nums){
+            mpp[i]++;
+        }
+        int cm=0;
+        for(auto &it:mpp){
+            if(it.second>1)cm++;
+        }
+        int ans=0,n=nums.size();
+        
+        for(int i=0;i<n;i=i+3){
+            if(cm==0){
+                break;
+            }
+            ans++;
+            for(int j=i;j<min(i+3,n);j++){
+                mpp[nums[j]]--;
+                if(mpp[nums[j]]==1)cm--;
             }
         }
-        if(check)return 0;
-        int count=0;
-        if(n<=3)return 1;
-        while(!check&&nums.size()>2){
-            for(int i=0;i<3;i++){
-                if(newm.find(nums[i])!=newm.end()){
-                    newm[nums[i]]--;
-                    if(newm[nums[i]]==0) newm.erase(nums[i]);
-                }    
-            }
-            nums.erase(nums.begin(),nums.begin()+3);
-            count++;
-            if(newm.size()==0)check=true;
-        }
-        if(nums.size()<3&&!check)count++;
-        return count;    
+        return ans;
     }
 };
