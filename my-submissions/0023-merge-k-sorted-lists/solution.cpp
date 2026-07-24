@@ -9,7 +9,7 @@
  * };
  */
  struct custumheap{
-    bool operator()(ListNode* a,ListNode* b){
+    static bool operator()(ListNode* a,ListNode* b){
         return a->val>b->val;
     }
  };
