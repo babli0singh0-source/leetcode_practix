@@ -12,27 +12,27 @@
 class Solution {
 public:
     int kthSmallest(TreeNode* root, int k) {
-        TreeNode* curr=root;
+        TreeNode* copy=root;
         int c=0;
         int ans=-1;
-        while(curr!=nullptr){
-            if(curr->left==nullptr){
+        while(copy!=nullptr){
+            if(copy->left==nullptr){
                 c++;
-                if(c==k)ans= curr->val;
-                curr=curr->right;
+                if(c==k)ans= copy->val;
+                copy=copy->right;
             }else{
-                TreeNode* temp=curr->left;
-                while(temp->right!=nullptr&&temp->right!=curr){
+                TreeNode* temp=copy->left;
+                while(temp->right!=nullptr&&temp->right!=copy){
                     temp=temp->right;
                 }
                 if(temp->right==nullptr){
-                    temp->right=curr;
-                    curr=curr->left;
-                }else{
+                    temp->right=copy;
+                    copy=copy->left;
+                }else if(temp->right==copy) {
                     temp->right=nullptr;
                     c++;
-                    if(c==k)ans= curr->val;
-                    curr=curr->right;
+                    if(c==k)ans= copy->val;
+                    copy=copy->right;
                 }
             }
         }
