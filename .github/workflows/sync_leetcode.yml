@@ -1,9 +1,9 @@
 name: Sync LeetCode Submissions
 
 on:
-  workflow_dispatch: # Allows you to manually run the sync anytime
+  workflow_dispatch:
   schedule:
-    - cron: '0 8 * * *' # Runs automatically every day at 8:00 AM UTC
+    - cron: '0 8 * * *'
 
 jobs:
   sync:
@@ -16,4 +16,5 @@ jobs:
           leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
           leetcode-session: ${{ secrets.LEETCODE_SESSION }}
           destination-folder: my-submissions
+          commit-interval: 20
           verbose: true
